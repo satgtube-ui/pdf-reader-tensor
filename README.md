@@ -1,15 +1,6 @@
-# Margin — personal PDF notes reader
+# Margin - personal PDF notes reader
 
-A small, iPad-friendly notes library built with Next.js. PDFs committed to `public/notes` are discovered automatically, including PDFs inside subject folders.
-
-## Login
-
-The default credentials are:
-
-- Username: `student`
-- Password: `study123`
-
-Change them in `lib/auth-config.ts` before deployment. The login is intentionally simple and suitable only for a personal study site. Anyone with access to the repository can read the credentials.
+A small, open-access, iPad-friendly notes library built with Next.js. PDFs committed to `public/notes` are discovered automatically, including PDFs inside subject folders.
 
 ## Add notes
 
@@ -29,4 +20,4 @@ Open `http://localhost:3000`.
 
 ## Deploy on Vercel
 
-Import the GitHub repository into Vercel and accept the detected Next.js defaults. No environment variables or database are required.
+Import the GitHub repository into Vercel and accept the detected Next.js defaults. No login, environment variables, or database are required.

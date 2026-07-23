@@ -1,7 +1,5 @@
-import { cookies } from "next/headers";
 import fs from "node:fs";
 import path from "node:path";
-import { AUTH_COOKIE, SESSION_TOKEN } from "@/lib/auth-config";
 import NotesApp, { type NoteFile } from "./notes-app";
 
 function labelFromFileName(fileName: string) {
@@ -36,13 +34,9 @@ function findPdfNotes(directory: string, baseDirectory = directory): NoteFile[] 
   });
 }
 
-export default async function Home() {
-  const cookieStore = await cookies();
-  const isAuthenticated = cookieStore.get(AUTH_COOKIE)?.value === SESSION_TOKEN;
-  const notes = isAuthenticated
-    ? findPdfNotes(path.join(process.cwd(), "public", "notes"))
-        .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
-    : [];
+export default function Home() {
+  const notes = findPdfNotes(path.join(process.cwd(), "public", "notes"))
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 
-  return <NotesApp initialAuthenticated={isAuthenticated} notes={notes} />;
+  return <NotesApp notes={notes} />;
 }
