@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#11110f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Golden Diagram Reader</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="toolbar">
+      <div class="title">
+        <strong>Golden Diagram</strong>
+        <span id="status">Ready to study</span>
+      </div>
+      <div class="actions">
+        <button id="resetView" type="button">Reset</button>
+        <button id="traceLock" class="lock-button" type="button" aria-pressed="false">
+          Trace lock
+        </button>
+      </div>
+    </header>
+
+    <main class="reader" aria-label="Golden Diagram PDF reader">
+      <iframe
+        id="pdfFrame"
+        title="Golden Diagram PDF"
+        src="/notes/Gold%20Diagram.pdf#view=FitH&toolbar=1&navpanes=0"
+      ></iframe>
+      <div id="touchShield" class="touch-shield" aria-hidden="true">
+        <span>Page locked for tracing</span>
+      </div>
+    </main>
+
+    <noscript>
+      <a class="no-script" href="/notes/Gold%20Diagram.pdf">Open Golden Diagram PDF</a>
+    </noscript>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,23 +1,11 @@
-# Margin - personal PDF notes reader
+# Golden Diagram Reader
 
-A small, open-access, iPad-friendly notes library built with Next.js. PDFs committed to `public/notes` are discovered automatically, including PDFs inside subject folders.
+An ultra-light static PDF reader designed for older iPads.
 
-## Add notes
+## Trace lock
 
-1. Put PDF files in `public/notes`.
-2. Optional: arrange them in folders such as `public/notes/biology`.
-3. Commit and push the files to GitHub.
-4. Vercel will rebuild the site and the PDFs will appear automatically.
+Open the PDF, position and zoom it, then press **Trace lock**. A transparent touch shield freezes scrolling, zooming, selection, and other document interaction while you trace. Press **Unlock** to move the PDF again.
 
-## Run locally
+## Deployment
 
-```bash
-npm install
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-## Deploy on Vercel
-
-Import the GitHub repository into Vercel and accept the detected Next.js defaults. No login, environment variables, or database are required.
+The site has no framework, packages, server, database, login, or build step. Vercel serves the `public` folder directly.
