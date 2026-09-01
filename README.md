@@ -1,11 +1,13 @@
-# HTML Flowchart Host
+# HTML Study Library
 
-An ultra-light static host for self-contained study flowcharts.
+An ultra-light static website for browsing self-contained HTML study notes and flowcharts.
 
-## Current flowchart
+## Add a note
 
-`public/index.html` contains the Male Reproductive System interactive flowchart. It is served directly with no framework, dependencies, database, login, or build step.
+1. Upload the `.html` file into `public/notes` (subfolders are supported).
+2. Commit and push it to `main`.
+3. Vercel automatically rebuilds the library page and adds the note.
 
-## Replacing the flowchart
+The displayed note name comes from its HTML `<title>`. If there is no title, the filename is used.
 
-Replace `public/index.html` with another self-contained HTML flowchart, then commit and push. Vercel serves the `public` folder directly.
+No framework, packages, database, login, or server is required.

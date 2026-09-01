@@ -1,4 +1,97 @@
-<!doctype html>
+import { promises as fs } from "node:fs";
+import path from "node:path";
+
+const notesDirectory = path.resolve("public", "notes");
+const outputFile = path.resolve("public", "index.html");
+
+async function findHtmlFiles(directory) {
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...(await findHtmlFiles(entryPath)));
+    else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) files.push(entryPath);
+  }
+
+  return files;
+}
+
+function decodeTitle(value) {
+  const named = { amp: "&", apos: "'", gt: ">", lt: "<", quot: '"', nbsp: " " };
+  return value.replace(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (match, entity) => {
+    if (entity[0] !== "#") return named[entity.toLowerCase()] ?? match;
+    const radix = entity[1].toLowerCase() === "x" ? 16 : 10;
+    const digits = radix === 16 ? entity.slice(2) : entity.slice(1);
+    return String.fromCodePoint(Number.parseInt(digits, radix));
+  });
+}
+
+function escapeHtml(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function titleFromHtml(html, fallback) {
+  const match = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+  if (!match) return fallback;
+  const title = decodeTitle(match[1].replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim());
+  return title || fallback;
+}
+
+function readableName(filePath) {
+  return path
+    .basename(filePath, path.extname(filePath))
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function publicUrl(filePath) {
+  const relativePath = path.relative(path.resolve("public"), filePath);
+  return `/${relativePath.split(path.sep).map(encodeURIComponent).join("/")}`;
+}
+
+await fs.mkdir(notesDirectory, { recursive: true });
+
+const noteFiles = await findHtmlFiles(notesDirectory);
+const notes = await Promise.all(
+  noteFiles.map(async (filePath) => {
+    const fallback = readableName(filePath);
+    const html = await fs.readFile(filePath, "utf8");
+    return {
+      href: publicUrl(filePath),
+      title: titleFromHtml(html, fallback),
+      filename: path.basename(filePath),
+    };
+  }),
+);
+
+notes.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+
+const cards = notes.length
+  ? notes
+      .map(
+        (note, index) => `
+        <li class="note" data-search="${escapeHtml(`${note.title} ${note.filename}`.toLowerCase())}">
+          <a href="${escapeHtml(note.href)}">
+            <span class="number">${String(index + 1).padStart(2, "0")}</span>
+            <span class="note-copy">
+              <strong>${escapeHtml(note.title)}</strong>
+              <small>${escapeHtml(note.filename)}</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>`,
+      )
+      .join("")
+  : `<li class="empty">No HTML notes yet. Add a file to <code>public/notes</code> and deploy again.</li>`;
+
+const page = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -45,19 +138,9 @@
     </header>
     <div class="tools">
       <input id="search" class="search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
-      <span id="count" class="count">1 note</span>
+      <span id="count" class="count">${notes.length} ${notes.length === 1 ? "note" : "notes"}</span>
     </div>
-    <ul id="notes">
-        <li class="note" data-search="male reproductive system - notes flowchart male-reproductive-system.html">
-          <a href="/notes/male-reproductive-system.html">
-            <span class="number">01</span>
-            <span class="note-copy">
-              <strong>Male Reproductive System - Notes Flowchart</strong>
-              <small>male-reproductive-system.html</small>
-            </span>
-            <span class="open" aria-hidden="true">Open&nbsp;›</span>
-          </a>
-        </li></ul>
+    <ul id="notes">${cards}</ul>
     <p id="no-results" class="no-results">No notes match that search.</p>
     <footer>HTML only · no app installation required</footer>
   </main>
@@ -69,7 +152,7 @@
       var notes = document.querySelectorAll(".note");
       if (!search || !notes.length) return;
       search.addEventListener("input", function () {
-        var query = search.value.toLowerCase().replace(/^\s+|\s+$/g, "");
+        var query = search.value.toLowerCase().replace(/^\\s+|\\s+$/g, "");
         var visible = 0;
         for (var i = 0; i < notes.length; i += 1) {
           var match = notes[i].getAttribute("data-search").indexOf(query) !== -1;
@@ -83,3 +166,7 @@
   </script>
 </body>
 </html>
+`;
+
+await fs.writeFile(outputFile, page, "utf8");
+console.log(`Generated ${path.relative(process.cwd(), outputFile)} with ${notes.length} note${notes.length === 1 ? "" : "s"}.`);

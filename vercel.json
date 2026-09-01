@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "",
-  "buildCommand": "node -e \"require('node:fs').accessSync('public/index.html')\"",
+  "buildCommand": "node scripts/generate-index.mjs",
   "outputDirectory": "public"
 }
