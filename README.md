@@ -1,11 +1,11 @@
-# Golden Diagram Reader
+# HTML Flowchart Host
 
-An ultra-light static PDF reader designed for older iPads.
+An ultra-light static host for self-contained study flowcharts.
 
-## Trace lock
+## Current flowchart
 
-Open the PDF, position and zoom it, then press **Trace lock**. A transparent touch shield freezes scrolling, zooming, selection, and other document interaction while you trace. Press **Unlock** to move the PDF again.
+`public/index.html` contains the Male Reproductive System interactive flowchart. It is served directly with no framework, dependencies, database, login, or build step.
 
-## Deployment
+## Replacing the flowchart
 
-The site has no framework, packages, server, database, login, or build step. Vercel serves the `public` folder directly.
+Replace `public/index.html` with another self-contained HTML flowchart, then commit and push. Vercel serves the `public` folder directly.
