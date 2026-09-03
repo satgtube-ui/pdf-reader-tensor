@@ -20,6 +20,13 @@
     .search { flex: 1; min-width: 0; height: 48px; padding: 0 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); font: inherit; font-size: 16px; -webkit-appearance: none; }
     .search:focus { outline: 3px solid rgba(48, 92, 77, .16); border-color: var(--green); }
     .count { flex: 0 0 auto; margin-left: 12px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    #group-nav { margin: 0 0 24px; }
+    #group-nav a { display: inline-block; padding: 10px 14px; margin: 0 8px 8px 0; border: 1px solid var(--line); border-radius: 8px; color: var(--green); text-decoration: none; font-size: 13px; font-weight: 700; }
+    #group-nav span { font-weight: 400; }
+    .note-group { margin: 28px 0; }
+    .group-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    h2 { margin: 0; font-size: 14px; line-height: 1.4; letter-spacing: .07em; color: var(--green); }
+    .group-count { margin-left: 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
     ul { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
     .note { border-bottom: 1px solid var(--line); }
     .note a { display: flex; min-height: 86px; align-items: center; gap: 16px; padding: 15px 4px; color: inherit; text-decoration: none; }
@@ -44,11 +51,255 @@
       <p class="intro">Open any note below. This page stays fast and simple for comfortable reading on an older iPad.</p>
     </header>
     <div class="tools">
-      <input id="search" class="search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
-      <span id="count" class="count">3 notes</span>
+      <input id="search" class="search" type="search" placeholder="Search notes or subjects" aria-label="Search notes or subjects" autocomplete="off" aria-controls="notes">
+      <span id="count" class="count" role="status" aria-live="polite">25 notes</span>
     </div>
-    <ul id="notes">
-        <li class="note" data-search="cerebrum - notes flowchart cerebrum.html">
+    <nav id="group-nav" aria-label="Note groups"><a href="#group-0">EMBRYOLOGY <span>(23)</span></a><a href="#group-1">Other notes <span>(2)</span></a></nav>
+    <div id="notes">
+    <section class="note-group" aria-labelledby="group-0">
+      <div class="group-heading">
+        <h2 id="group-0">EMBRYOLOGY</h2>
+        <span class="group-count">23 notes</span>
+      </div>
+      <ul>
+        <li class="note" data-search="embryology human embryology - notes flowchart 00-front-matter.html">
+          <a href="/notes/embryology/00-front-matter.html">
+            <span class="number">00</span>
+            <span class="note-copy">
+              <strong>Human Embryology - Notes Flowchart</strong>
+              <small>00-front-matter.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 1: some preliminary considerations - notes flowchart 01-some-preliminary-considerations.html">
+          <a href="/notes/embryology/01-some-preliminary-considerations.html">
+            <span class="number">01</span>
+            <span class="note-copy">
+              <strong>Chapter 1: Some Preliminary Considerations - Notes Flowchart</strong>
+              <small>01-some-preliminary-considerations.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 2: spermatogenesis and oogenesis - notes flowchart 02-spermatogenesis-and-oogenesis.html">
+          <a href="/notes/embryology/02-spermatogenesis-and-oogenesis.html">
+            <span class="number">02</span>
+            <span class="note-copy">
+              <strong>Chapter 2: Spermatogenesis And Oogenesis - Notes Flowchart</strong>
+              <small>02-spermatogenesis-and-oogenesis.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 3: the menstrual cycle - notes flowchart 03-the-menstrual-cycle.html">
+          <a href="/notes/embryology/03-the-menstrual-cycle.html">
+            <span class="number">03</span>
+            <span class="note-copy">
+              <strong>Chapter 3: The Menstrual Cycle - Notes Flowchart</strong>
+              <small>03-the-menstrual-cycle.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 4: formation of germ layers - notes flowchart 04-formation-of-germ-layers.html">
+          <a href="/notes/embryology/04-formation-of-germ-layers.html">
+            <span class="number">04</span>
+            <span class="note-copy">
+              <strong>Chapter 4: Formation Of Germ Layers - Notes Flowchart</strong>
+              <small>04-formation-of-germ-layers.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 5: further development of embryonic disc - notes flowchart 05-further-development-of-embryonic-disc.html">
+          <a href="/notes/embryology/05-further-development-of-embryonic-disc.html">
+            <span class="number">05</span>
+            <span class="note-copy">
+              <strong>Chapter 5: Further Development Of Embryonic Disc - Notes Flowchart</strong>
+              <small>05-further-development-of-embryonic-disc.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 6: the placenta - notes flowchart 06-the-placenta.html">
+          <a href="/notes/embryology/06-the-placenta.html">
+            <span class="number">06</span>
+            <span class="note-copy">
+              <strong>Chapter 6: The Placenta - Notes Flowchart</strong>
+              <small>06-the-placenta.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 7: formation of tissues of the body - notes flowchart 07-formation-of-tissues-of-the-body.html">
+          <a href="/notes/embryology/07-formation-of-tissues-of-the-body.html">
+            <span class="number">07</span>
+            <span class="note-copy">
+              <strong>Chapter 7: Formation Of Tissues Of The Body - Notes Flowchart</strong>
+              <small>07-formation-of-tissues-of-the-body.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 8: the skin and its appendages - notes flowchart 08-the-skin-and-its-appendages.html">
+          <a href="/notes/embryology/08-the-skin-and-its-appendages.html">
+            <span class="number">08</span>
+            <span class="note-copy">
+              <strong>Chapter 8: The Skin And Its Appendages - Notes Flowchart</strong>
+              <small>08-the-skin-and-its-appendages.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 9: the pharyngeal arches - notes flowchart 09-the-pharyngeal-arches.html">
+          <a href="/notes/embryology/09-the-pharyngeal-arches.html">
+            <span class="number">09</span>
+            <span class="note-copy">
+              <strong>Chapter 9: The Pharyngeal Arches - Notes Flowchart</strong>
+              <small>09-the-pharyngeal-arches.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 10: the skeleton - notes flowchart 10-the-skeleton.html">
+          <a href="/notes/embryology/10-the-skeleton.html">
+            <span class="number">10</span>
+            <span class="note-copy">
+              <strong>Chapter 10: The Skeleton - Notes Flowchart</strong>
+              <small>10-the-skeleton.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 11: face, nose and palate - notes flowchart 11-face-nose-and-palate.html">
+          <a href="/notes/embryology/11-face-nose-and-palate.html">
+            <span class="number">11</span>
+            <span class="note-copy">
+              <strong>Chapter 11: Face, Nose and Palate - Notes Flowchart</strong>
+              <small>11-face-nose-and-palate.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 12: alimentary system i mouth pharynx - notes flowchart 12-alimentary-system-i-mouth-pharynx.html">
+          <a href="/notes/embryology/12-alimentary-system-i-mouth-pharynx.html">
+            <span class="number">12</span>
+            <span class="note-copy">
+              <strong>Chapter 12: Alimentary System I Mouth Pharynx - Notes Flowchart</strong>
+              <small>12-alimentary-system-i-mouth-pharynx.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 13: alimentary system ii gastrointestinal tract - notes flowchart 13-alimentary-system-ii-gastrointestinal-tract.html">
+          <a href="/notes/embryology/13-alimentary-system-ii-gastrointestinal-tract.html">
+            <span class="number">13</span>
+            <span class="note-copy">
+              <strong>Chapter 13: Alimentary System II Gastrointestinal Tract - Notes Flowchart</strong>
+              <small>13-alimentary-system-ii-gastrointestinal-tract.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 14: liver pancreas spleen respiratory system body cavities - notes flowchart 14-liver-pancreas-spleen-respiratory-system-body-cavities.html">
+          <a href="/notes/embryology/14-liver-pancreas-spleen-respiratory-system-body-cavities.html">
+            <span class="number">14</span>
+            <span class="note-copy">
+              <strong>Chapter 14: Liver Pancreas Spleen Respiratory System Body Cavities - Notes Flowchart</strong>
+              <small>14-liver-pancreas-spleen-respiratory-system-body-cavities.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 15: cardiovascular system - notes flowchart 15-cardiovascular-system.html">
+          <a href="/notes/embryology/15-cardiovascular-system.html">
+            <span class="number">15</span>
+            <span class="note-copy">
+              <strong>Chapter 15: Cardiovascular System - Notes Flowchart</strong>
+              <small>15-cardiovascular-system.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 16: urogenital system - notes flowchart 16-urogenital-system.html">
+          <a href="/notes/embryology/16-urogenital-system.html">
+            <span class="number">16</span>
+            <span class="note-copy">
+              <strong>Chapter 16: Urogenital System - Notes Flowchart</strong>
+              <small>16-urogenital-system.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 17: the nervous system - notes flowchart 17-the-nervous-system.html">
+          <a href="/notes/embryology/17-the-nervous-system.html">
+            <span class="number">17</span>
+            <span class="note-copy">
+              <strong>Chapter 17: The Nervous System - Notes Flowchart</strong>
+              <small>17-the-nervous-system.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 18: hypophysis cerebri pineal adrenal - notes flowchart 18-hypophysis-cerebri-pineal-adrenal.html">
+          <a href="/notes/embryology/18-hypophysis-cerebri-pineal-adrenal.html">
+            <span class="number">18</span>
+            <span class="note-copy">
+              <strong>Chapter 18: Hypophysis Cerebri Pineal Adrenal - Notes Flowchart</strong>
+              <small>18-hypophysis-cerebri-pineal-adrenal.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 19: the eye and ear - notes flowchart 19-the-eye-and-ear.html">
+          <a href="/notes/embryology/19-the-eye-and-ear.html">
+            <span class="number">19</span>
+            <span class="note-copy">
+              <strong>Chapter 19: The Eye And Ear - Notes Flowchart</strong>
+              <small>19-the-eye-and-ear.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 20: fate of the germ layers - notes flowchart 20-fate-of-the-germ-layers.html">
+          <a href="/notes/embryology/20-fate-of-the-germ-layers.html">
+            <span class="number">20</span>
+            <span class="note-copy">
+              <strong>Chapter 20: Fate Of The Germ Layers - Notes Flowchart</strong>
+              <small>20-fate-of-the-germ-layers.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 21: some general considerations - notes flowchart 21-some-general-considerations.html">
+          <a href="/notes/embryology/21-some-general-considerations.html">
+            <span class="number">21</span>
+            <span class="note-copy">
+              <strong>Chapter 21: Some General Considerations - Notes Flowchart</strong>
+              <small>21-some-general-considerations.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li>
+        <li class="note" data-search="embryology chapter 22: elementary genetics - notes flowchart 22-elementary-genetics.html">
+          <a href="/notes/embryology/22-elementary-genetics.html">
+            <span class="number">22</span>
+            <span class="note-copy">
+              <strong>Chapter 22: Elementary Genetics - Notes Flowchart</strong>
+              <small>22-elementary-genetics.html</small>
+            </span>
+            <span class="open" aria-hidden="true">Open&nbsp;›</span>
+          </a>
+        </li></ul>
+    </section>
+    <section class="note-group" aria-labelledby="group-1">
+      <div class="group-heading">
+        <h2 id="group-1">Other notes</h2>
+        <span class="group-count">2 notes</span>
+      </div>
+      <ul>
+        <li class="note" data-search="other notes cerebrum - notes flowchart cerebrum.html">
           <a href="/notes/cerebrum.html">
             <span class="number">01</span>
             <span class="note-copy">
@@ -58,19 +309,9 @@
             <span class="open" aria-hidden="true">Open&nbsp;›</span>
           </a>
         </li>
-        <li class="note" data-search="chapter 9: the pharyngeal arches - notes flowchart pharyngeal-arches.html">
-          <a href="/notes/pharyngeal-arches.html">
-            <span class="number">02</span>
-            <span class="note-copy">
-              <strong>Chapter 9: The Pharyngeal Arches - Notes Flowchart</strong>
-              <small>pharyngeal-arches.html</small>
-            </span>
-            <span class="open" aria-hidden="true">Open&nbsp;›</span>
-          </a>
-        </li>
-        <li class="note" data-search="male reproductive system - notes flowchart male-reproductive-system.html">
+        <li class="note" data-search="other notes male reproductive system - notes flowchart male-reproductive-system.html">
           <a href="/notes/male-reproductive-system.html">
-            <span class="number">03</span>
+            <span class="number">02</span>
             <span class="note-copy">
               <strong>Male Reproductive System - Notes Flowchart</strong>
               <small>male-reproductive-system.html</small>
@@ -78,6 +319,7 @@
             <span class="open" aria-hidden="true">Open&nbsp;›</span>
           </a>
         </li></ul>
+    </section></div>
     <p id="no-results" class="no-results">No notes match that search.</p>
     <footer>HTML only · no app installation required</footer>
   </main>
@@ -87,6 +329,8 @@
       var count = document.getElementById("count");
       var empty = document.getElementById("no-results");
       var notes = document.querySelectorAll(".note");
+      var groups = document.querySelectorAll(".note-group");
+      var navigation = document.getElementById("group-nav");
       if (!search || !notes.length) return;
       search.addEventListener("input", function () {
         var query = search.value.toLowerCase().replace(/^\s+|\s+$/g, "");
@@ -96,6 +340,16 @@
           notes[i].style.display = match ? "" : "none";
           if (match) visible += 1;
         }
+        for (var g = 0; g < groups.length; g += 1) {
+          var groupNotes = groups[g].querySelectorAll(".note");
+          var groupVisible = 0;
+          for (var n = 0; n < groupNotes.length; n += 1) {
+            if (groupNotes[n].style.display !== "none") groupVisible += 1;
+          }
+          groups[g].style.display = groupVisible ? "" : "none";
+          groups[g].querySelector(".group-count").textContent = groupVisible + (groupVisible === 1 ? " note" : " notes");
+        }
+        if (navigation) navigation.style.display = query ? "none" : "";
         count.textContent = visible + (visible === 1 ? " note" : " notes");
         empty.style.display = visible ? "none" : "block";
       });

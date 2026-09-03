@@ -3,5 +3,12 @@
   "framework": null,
   "installCommand": "",
   "buildCommand": "node scripts/generate-index.mjs",
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/notes/pharyngeal-arches.html",
+      "destination": "/notes/embryology/09-the-pharyngeal-arches.html",
+      "permanent": true
+    }
+  ]
 }

@@ -63,23 +63,54 @@ const notes = await Promise.all(
   noteFiles.map(async (filePath) => {
     const fallback = readableName(filePath);
     const html = await fs.readFile(filePath, "utf8");
+    const relativeParts = path.relative(notesDirectory, filePath).split(path.sep);
+    const group = relativeParts.length > 1 ? relativeParts[0] : "";
+    const chapterMatch = group && path.basename(filePath).match(/^(\d+)[-_]/);
     return {
       href: publicUrl(filePath),
       title: titleFromHtml(html, fallback),
       filename: path.basename(filePath),
+      group,
+      chapter: chapterMatch ? Number(chapterMatch[1]) : null,
     };
   }),
 );
 
-notes.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+function groupLabel(group) {
+  return group ? group.replace(/[-_]+/g, " ").toUpperCase() : "Other notes";
+}
 
-const cards = notes.length
-  ? notes
+notes.sort((a, b) => {
+  if (a.group !== b.group) {
+    if (!a.group) return 1;
+    if (!b.group) return -1;
+    return a.group.localeCompare(b.group, "en", { sensitivity: "base" });
+  }
+  if (a.chapter !== null || b.chapter !== null) {
+    if (a.chapter === null) return 1;
+    if (b.chapter === null) return -1;
+    if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+  }
+  return a.title.localeCompare(b.title, "en", { sensitivity: "base", numeric: true }) || a.href.localeCompare(b.href, "en");
+});
+
+const groups = [];
+for (const note of notes) {
+  let group = groups.find((item) => item.key === note.group);
+  if (!group) {
+    group = { key: note.group, label: groupLabel(note.group), notes: [] };
+    groups.push(group);
+  }
+  group.notes.push(note);
+}
+
+function renderCards(groupNotes) {
+  return groupNotes
       .map(
         (note, index) => `
-        <li class="note" data-search="${escapeHtml(`${note.title} ${note.filename}`.toLowerCase())}">
+        <li class="note" data-search="${escapeHtml(`${groupLabel(note.group)} ${note.title} ${note.filename}`.toLowerCase())}">
           <a href="${escapeHtml(note.href)}">
-            <span class="number">${String(index + 1).padStart(2, "0")}</span>
+            <span class="number">${String(note.chapter ?? index + 1).padStart(2, "0")}</span>
             <span class="note-copy">
               <strong>${escapeHtml(note.title)}</strong>
               <small>${escapeHtml(note.filename)}</small>
@@ -88,8 +119,23 @@ const cards = notes.length
           </a>
         </li>`,
       )
-      .join("")
-  : `<li class="empty">No HTML notes yet. Add a file to <code>public/notes</code> and deploy again.</li>`;
+      .join("");
+}
+
+const sections = groups.length
+  ? groups.map((group, index) => `
+    <section class="note-group" aria-labelledby="group-${index}">
+      <div class="group-heading">
+        <h2 id="group-${index}">${escapeHtml(group.label)}</h2>
+        <span class="group-count">${group.notes.length} ${group.notes.length === 1 ? "note" : "notes"}</span>
+      </div>
+      <ul>${renderCards(group.notes)}</ul>
+    </section>`).join("")
+  : `<p class="empty">No HTML notes yet. Add a file to <code>public/notes</code> and deploy again.</p>`;
+
+const navigation = groups.length > 1
+  ? `<nav id="group-nav" aria-label="Note groups">${groups.map((group, index) => `<a href="#group-${index}">${escapeHtml(group.label)} <span>(${group.notes.length})</span></a>`).join("")}</nav>`
+  : "";
 
 const page = `<!doctype html>
 <html lang="en">
@@ -113,6 +159,13 @@ const page = `<!doctype html>
     .search { flex: 1; min-width: 0; height: 48px; padding: 0 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); font: inherit; font-size: 16px; -webkit-appearance: none; }
     .search:focus { outline: 3px solid rgba(48, 92, 77, .16); border-color: var(--green); }
     .count { flex: 0 0 auto; margin-left: 12px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    #group-nav { margin: 0 0 24px; }
+    #group-nav a { display: inline-block; padding: 10px 14px; margin: 0 8px 8px 0; border: 1px solid var(--line); border-radius: 8px; color: var(--green); text-decoration: none; font-size: 13px; font-weight: 700; }
+    #group-nav span { font-weight: 400; }
+    .note-group { margin: 28px 0; }
+    .group-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    h2 { margin: 0; font-size: 14px; line-height: 1.4; letter-spacing: .07em; color: var(--green); }
+    .group-count { margin-left: 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
     ul { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
     .note { border-bottom: 1px solid var(--line); }
     .note a { display: flex; min-height: 86px; align-items: center; gap: 16px; padding: 15px 4px; color: inherit; text-decoration: none; }
@@ -137,10 +190,11 @@ const page = `<!doctype html>
       <p class="intro">Open any note below. This page stays fast and simple for comfortable reading on an older iPad.</p>
     </header>
     <div class="tools">
-      <input id="search" class="search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
-      <span id="count" class="count">${notes.length} ${notes.length === 1 ? "note" : "notes"}</span>
+      <input id="search" class="search" type="search" placeholder="Search notes or subjects" aria-label="Search notes or subjects" autocomplete="off" aria-controls="notes">
+      <span id="count" class="count" role="status" aria-live="polite">${notes.length} ${notes.length === 1 ? "note" : "notes"}</span>
     </div>
-    <ul id="notes">${cards}</ul>
+    ${navigation}
+    <div id="notes">${sections}</div>
     <p id="no-results" class="no-results">No notes match that search.</p>
     <footer>HTML only · no app installation required</footer>
   </main>
@@ -150,6 +204,8 @@ const page = `<!doctype html>
       var count = document.getElementById("count");
       var empty = document.getElementById("no-results");
       var notes = document.querySelectorAll(".note");
+      var groups = document.querySelectorAll(".note-group");
+      var navigation = document.getElementById("group-nav");
       if (!search || !notes.length) return;
       search.addEventListener("input", function () {
         var query = search.value.toLowerCase().replace(/^\\s+|\\s+$/g, "");
@@ -159,6 +215,16 @@ const page = `<!doctype html>
           notes[i].style.display = match ? "" : "none";
           if (match) visible += 1;
         }
+        for (var g = 0; g < groups.length; g += 1) {
+          var groupNotes = groups[g].querySelectorAll(".note");
+          var groupVisible = 0;
+          for (var n = 0; n < groupNotes.length; n += 1) {
+            if (groupNotes[n].style.display !== "none") groupVisible += 1;
+          }
+          groups[g].style.display = groupVisible ? "" : "none";
+          groups[g].querySelector(".group-count").textContent = groupVisible + (groupVisible === 1 ? " note" : " notes");
+        }
+        if (navigation) navigation.style.display = query ? "none" : "";
         count.textContent = visible + (visible === 1 ? " note" : " notes");
         empty.style.display = visible ? "none" : "block";
       });
