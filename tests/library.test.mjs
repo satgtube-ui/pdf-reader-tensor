@@ -108,13 +108,31 @@ test("empty library is readable without search or JavaScript errors", async (t) 
   assert.doesNotThrow(() => wireSearch(html, []));
 });
 
-test("published library contains 23 ordered embryology files and a legacy redirect", async () => {
+test("published library keeps ordered subject groups and the legacy redirect", async () => {
   const html = await fs.readFile(path.join(project, "public", "index.html"), "utf8");
   const urls = [...html.matchAll(/<a href="(\/notes\/[^\"]+)"/g)].map((match) => match[1]);
   const embryology = urls.filter((url) => url.startsWith("/notes/embryology/"));
   assert.equal(embryology.length, 23);
-  assert.equal(urls.length, 25);
   assert.deepEqual(embryology.map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 23 }, (_, index) => index));
+  const biochemistry = urls.filter((url) => url.startsWith("/notes/biochemistry/"));
+  assert.ok(biochemistry.length >= 20);
+  assert.deepEqual(biochemistry.slice(0, 20).map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 20 }, (_, index) => index + 1));
+  assert.match(html, /<h2[^>]*>BIOCHEMISTRY<\/h2>/);
+  assert.match(html, /<h2[^>]*>EMBRYOLOGY<\/h2>/);
+  assert.match(html, /<h2[^>]*>Other notes<\/h2>/);
+  async function noteUrls(directory) {
+    const entries = await fs.readdir(directory, { withFileTypes: true });
+    const found = [];
+    for (const entry of entries) {
+      const file = path.join(directory, entry.name);
+      if (entry.isDirectory()) found.push(...await noteUrls(file));
+      else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
+        found.push("/" + path.relative(path.join(project, "public"), file).split(path.sep).map(encodeURIComponent).join("/"));
+      }
+    }
+    return found;
+  }
+  assert.deepEqual([...urls].sort(), (await noteUrls(path.join(project, "public", "notes"))).sort());
   assert.equal(urls.filter((url) => url.includes("pharyngeal-arches")).length, 1);
   for (const url of urls) await fs.access(path.join(project, "public", decodeURIComponent(url)));
   const config = JSON.parse(await fs.readFile(path.join(project, "vercel.json"), "utf8"));

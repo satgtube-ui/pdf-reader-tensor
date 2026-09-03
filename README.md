@@ -18,4 +18,6 @@ The **EMBRYOLOGY** group lives in `public/notes/embryology`. It contains front m
 
 The original Pharyngeal Arches URL redirects to its new location in EMBRYOLOGY.
 
+The **BIOCHEMISTRY** group lives in `public/notes/biochemistry`. The initial import contains completed chapters `01`–`20`, verified against the source batch completion records on 3 September 2026. In-progress chapters are not published. Later completed flowcharts can be added to this folder using the same numbered chapter filenames.
+
 No framework, packages, database, login, or server is required.
