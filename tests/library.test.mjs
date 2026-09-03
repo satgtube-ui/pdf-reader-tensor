@@ -115,8 +115,8 @@ test("published library keeps ordered subject groups and the legacy redirect", a
   assert.equal(embryology.length, 23);
   assert.deepEqual(embryology.map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 23 }, (_, index) => index));
   const biochemistry = urls.filter((url) => url.startsWith("/notes/biochemistry/"));
-  assert.ok(biochemistry.length >= 20);
-  assert.deepEqual(biochemistry.slice(0, 20).map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 20 }, (_, index) => index + 1));
+  assert.equal(biochemistry.length, 33);
+  assert.deepEqual(biochemistry.map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 33 }, (_, index) => index + 1));
   assert.match(html, /<h2[^>]*>BIOCHEMISTRY<\/h2>/);
   assert.match(html, /<h2[^>]*>EMBRYOLOGY<\/h2>/);
   assert.match(html, /<h2[^>]*>Other notes<\/h2>/);
