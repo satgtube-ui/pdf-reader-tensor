@@ -117,8 +117,12 @@ test("published library keeps ordered subject groups and the legacy redirect", a
   const biochemistry = urls.filter((url) => url.startsWith("/notes/biochemistry/"));
   assert.equal(biochemistry.length, 33);
   assert.deepEqual(biochemistry.map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 33 }, (_, index) => index + 1));
+  const grossAnatomy = urls.filter((url) => url.startsWith("/notes/gross-anatomy/"));
+  assert.equal(grossAnatomy.length, 29);
+  assert.deepEqual(grossAnatomy.map((url) => Number(path.basename(url).slice(0, 2))), Array.from({ length: 29 }, (_, index) => index + 1));
   assert.match(html, /<h2[^>]*>BIOCHEMISTRY<\/h2>/);
   assert.match(html, /<h2[^>]*>EMBRYOLOGY<\/h2>/);
+  assert.match(html, /<h2[^>]*>GROSS ANATOMY<\/h2>/);
   assert.match(html, /<h2[^>]*>Other notes<\/h2>/);
   async function noteUrls(directory) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
